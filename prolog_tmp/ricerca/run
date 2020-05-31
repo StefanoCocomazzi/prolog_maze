@@ -1,0 +1,3 @@
+:- consult("labirinto.pl").
+:- consult("azioni.pl").
+:- consult("iterative_deepening.pl").
