@@ -1,0 +1,37 @@
+#prolog-console-app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #9da0a3;
+  /* background: #2c3e50; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+section {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+}
+textarea {
+  width: 36vw;
+  height: 36vh;
+}
+pre {
+  width: 36vw;
+  height: 28vh;
+  font-family: monospace;
+  text-align: left;
+  background: #2c3e50;
+  color: aliceblue;
+  font-size: large;
+}
+button {
+  margin-top: 1em;
+  width: 8vw;
+}
