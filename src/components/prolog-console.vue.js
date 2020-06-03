@@ -1,11 +1,11 @@
 Vue.component("prolog-console", {
     template: `<div>
-  <div class="accordion" id="accordionInterprete">
+  <div class="accordion fixed-bottom" id="accordionInterprete">
     <div class="card">
       <div class="card-header" id="headingOne">
         <h2 class="mb-0">
           <button
-            class="btn btn-link btn-block text-left"
+            class="btn btn-link btn-block text-left mt-0"
             type="button"
             data-toggle="collapse"
             data-target="#collapseOne"
@@ -24,9 +24,10 @@ Vue.component("prolog-console", {
         data-parent="#accordionInterprete"
       >
         <div class="card-body">
+ 
           <div id="prolog-console-app" @keydown.ctrl.enter="runProlog()">
-            <section>
-              <div>
+            <section class="row">
+              <div class="col">
                 <h2>Knowledge Base</h2>
                 <textarea
                   name="input-7-1"
@@ -34,7 +35,7 @@ Vue.component("prolog-console", {
                   placeholder="Write Program"
                 ></textarea>
               </div>
-              <div>
+              <div class="col">
                 <h2>Query</h2>
                 <textarea
                   name="input-7-1"
@@ -42,13 +43,11 @@ Vue.component("prolog-console", {
                   placeholder="Query the KB. [ctrl + enter] to execute"
                 ></textarea>
               </div>
-            </section>
-
-            <button type="button" class="btn btn-dark" @click="runProlog()" v-on:keypress.ctrl.enter="runProlog()">
-              run
-            </button>
-
-            <pre style="margin: 1em;">{{answers}}</pre>
+              <div class="col">
+               <button type="button" class="btn btn-outline-success btn-block" @click="runProlog()" v-on:keypress.ctrl.enter="runProlog()">Run</button>
+               <div class="answer">{{answers}}</div>
+              </div>
+            </section>   
           </div>
         </div>
       </div>

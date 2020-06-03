@@ -26,13 +26,13 @@ var app = new Vue({
   }),
   watch: {},
   beforeCreate() {
-    fetch("../prolog-scripts/antenati.pl")
+    fetch("src/prolog-scripts/antenati.pl")
       .then((res) => res.text())
       .then((res) => {
         this.knowledgeBase.push(res);
         session.consult(res);
       });
-    fetch("../prolog-scripts/labirinto.pl")
+    fetch("src/prolog-scripts/labirinto.pl")
       .then((res) => res.text())
       .then((res) => {
         this.knowledgeBase.push(res);
