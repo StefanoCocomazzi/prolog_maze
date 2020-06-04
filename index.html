@@ -20,12 +20,8 @@
     <div class="container-fluid">
       <div id="app">
         <pms-toolbar title="Prolog Maze Solver"></pms-toolbar>
-        <app-maze></app-maze>
-        <prolog-console
-          :program="program"
-          :session="session"
-          :pl="pl"
-        ></prolog-console>
+        <app-maze :mazeobj="mazeobj"></app-maze>
+        <prolog-console :mazeobj="mazeobj"></prolog-console>
       </div>
     </div>
 
