@@ -1,64 +1,65 @@
 Vue.component("app-maze", {
   template: `
-  <div class="container-fluid">
-  <p>{{rows}} x {{columns}}</p>
-  <div class="form-row">
-    <div class="col">
-      <input
-        v-model="rows"
-        type="number"
-        class="form-control"
-        placeholder="Rows"
-      />
+  <div class="container">
+    <div class="form-row">
+      <div class="col-2">
+        <input
+          v-model="rows"
+          type="number"
+          class="form-control"
+          placeholder="Rows"
+        />
+      </div>
+      <div class="col-2">
+        <input
+          v-model="columns"
+          type="number"
+          class="form-control"
+          placeholder="Columns"
+        />
+      </div>
+      <div class="col">
+        <div class="btn-group btn-group-toggle btn-block" data-toggle="buttons">
+          <label class="btn btn-secondary active">
+            <input @click="editMode='wall'" type="radio" name="options" checked />
+            Wall
+          </label>
+          <label class="btn btn-secondary">
+            <input @click="editMode='empty'" type="radio" name="options" /> Empty
+          </label>
+          <label class="btn btn-secondary">
+            <input @click="editMode='start'" type="radio" name="options" /> Start
+          </label>
+          <label class="btn btn-secondary">
+            <input @click="editMode='goal'" type="radio" name="options" /> Goal
+          </label>
+        </div>
+      </div>
+      <div class="col-2">
+        <button class="btn btn-primary btn-block" @click="findPath()">Find Path</button>
+      </div>
     </div>
-    <div class="col">
-      <input
-        v-model="columns"
-        type="number"
-        class="form-control"
-        placeholder="Columns"
-      />
+    <div class="row pt-5 justify-content-center flex-grow-1">
+      <div class="col">
+        <table :key="updater">
+          <tr v-for="row in Number(rows)" :key="row">
+            <td
+              v-for="col in Number(columns)"
+              :key="col"
+              :id="row*col"
+              @click="setState(row-1,col-1)"
+              class="cell"
+              :class="maze[row-1][col-1]"
+            ></td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-4">
+        <pre>{{generateCode()}}</pre>
+      </div>
     </div>
-    <div class="col">
-      <button class="btn btn-block btn-primary">Genera Griglia</button>
-    </div>
+   </div>
   </div>
-  <div class="btn-group btn-group-toggle btn-block" data-toggle="buttons">
-    <label class="btn btn-secondary active">
-      <input @click="editMode='wall'" type="radio" name="options" checked />
-      Wall
-    </label>
-    <label class="btn btn-secondary">
-      <input @click="editMode='empty'" type="radio" name="options" /> Empty
-    </label>
-    <label class="btn btn-secondary">
-      <input @click="editMode='start'" type="radio" name="options" /> Start
-    </label>
-    <label class="btn btn-secondary">
-      <input @click="editMode='goal'" type="radio" name="options" /> Goal
-    </label>
-  </div>
-  <div class="row">
-    <div class="col-8 d-flex align-items-center justify-content-center">
-      <table :key="updater">
-        <tr v-for="row in Number(rows)" :key="row">
-          <td
-            v-for="col in Number(columns)"
-            :key="col"
-            :id="row*col"
-            @click="setState(row-1,col-1)"
-            class="cell"
-            :class="maze[row-1][col-1]"
-          ></td>
-        </tr>
-      </table>
-    </div>
-    <div class="col-4 d-flex align-items-center justify-content-center">
-      <pre>{{generateCode()}}</pre>
-    </div>
-  </div>
-  <button @click="findPath()">Find Path</button>
-</div>
 
   `,
   props: ["mazeobj"],
