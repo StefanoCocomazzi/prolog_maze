@@ -45,6 +45,7 @@ Vue.component("app-maze", {
           <td
             v-for="col in Number(columns)"
             :key="col"
+            :id="row*col"
             @click="setState(row-1,col-1)"
             class="cell"
             :class="maze[row-1][col-1]"
@@ -56,6 +57,7 @@ Vue.component("app-maze", {
       <pre>{{generateCode()}}</pre>
     </div>
   </div>
+  <button @click="findPath()">Find Path</button>
 </div>
 
   `,
@@ -84,6 +86,8 @@ Vue.component("app-maze", {
     },
     generateCode() {
       let res = [];
+      res.push("columns(" + this.columns + ").");
+      res.push("rows(" + this.rows + ").");
       for (let i = 0; i < this.rows; i++) {
         for (let j = 0; j < this.columns; j++) {
           if (this.maze[i][j] !== "empty") {
@@ -93,8 +97,12 @@ Vue.component("app-maze", {
           }
         }
       }
+
       this.mazeobj.string = res.join("\n");
       return res;
+    },
+    findPath() {
+      eventBus.$emit("find-path");
     },
   },
   computed: {},

@@ -33,7 +33,7 @@ Vue.component("prolog-console", {
             <section class="row">
               <div class="col">
                 <h2>Knowledge Base</h2>
-                <div>Cuurent KB =>{{KB()}}</div>
+                <div style="height: 320px;overflow-y:scroll;">Cuurent KB =>{{KB()}}</div>
                 <textarea
                   name="input-7-1"
                   v-model="knowledgeBase.program"
@@ -71,15 +71,33 @@ Vue.component("prolog-console", {
     updater: 0,
   }),
   beforeCreate() {
-    fetch("src/prolog-scripts/labirinto.pl")
+    fetch("src/prolog-scripts/actions.pl")
       .then((res) => res.text())
       .then((res) => {
         this.knowledgeBase["actions"] = res;
         this.updater++;
       });
+    fetch("src/prolog-scripts/dfs.pl")
+      .then((res) => res.text())
+      .then((res) => {
+        this.knowledgeBase["dfs"] = res;
+        this.updater++;
+      });
   },
-  created() {},
+  created() {
+    // potremmo farci passare il maze come parametro trami eventBus?
+    // semplificherebbe le cose o è inutile??
+    eventBus.$on("find-path", () => this.computePath());
+  },
+
   methods: {
+    computePath() {
+      console.log("computePath");
+      this.knowledgeBase.maze = this.mazeobj.string;
+      session.consult(this.KB());
+      session.query("dfs(X).");
+      session.answer((ans) => console.log(pl.format_answer(ans)));
+    },
     runProlog() {
       this.answers = "";
       this.query = this.query.trim();
@@ -91,10 +109,9 @@ Vue.component("prolog-console", {
     },
 
     getAnswerlist(query) {
-      // console.log("kb", this.KB());
-
-      const session = pl.create();
+      // const session = pl.create();
       session.consult(this.KB());
+
       session.query(query);
       let answers_list = [];
       let current_answer = true;
@@ -108,8 +125,6 @@ Vue.component("prolog-console", {
     },
 
     KB() {
-      // console.log(Object.entries(this.knowledgeBase));
-
       return Object.entries(this.knowledgeBase)
         .map(([key, value]) => value)
         .join("\n");
