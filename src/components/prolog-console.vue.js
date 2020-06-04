@@ -1,4 +1,4 @@
-const MAX_RESOLUTION_STEPS = 10000;
+const MAX_RESOLUTION_STEPS = 100000;
 const MODULES = ":- use_module(library(lists)).";
 const session = pl.create(MAX_RESOLUTION_STEPS);
 session.consult(MODULES);

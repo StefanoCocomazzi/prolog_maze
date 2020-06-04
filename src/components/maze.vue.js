@@ -45,7 +45,7 @@ Vue.component("app-maze", {
           <td
             v-for="col in Number(columns)"
             :key="col"
-            :id="row*col"
+            :id="'cell'+row+''+col"
             @click="setState(row-1,col-1)"
             class="cell"
             :class="maze[row-1][col-1]"
@@ -90,7 +90,16 @@ Vue.component("app-maze", {
       res.push("rows(" + this.rows + ").");
       for (let i = 0; i < this.rows; i++) {
         for (let j = 0; j < this.columns; j++) {
-          if (this.maze[i][j] !== "empty") {
+          if (this.maze[i][j] === "start" || this.maze[i][j] === "goal") {
+            res.push(
+              this.maze[i][j] + "(pos(" + (i + 1) + "," + (j + 1) + "))."
+            );
+          }
+        }
+      }
+      for (let i = 0; i < this.rows; i++) {
+        for (let j = 0; j < this.columns; j++) {
+          if (this.maze[i][j] === "wall") {
             res.push(
               this.maze[i][j] + "(pos(" + (i + 1) + "," + (j + 1) + "))."
             );
