@@ -39,7 +39,7 @@ Vue.component("app-maze", {
     </label>
   </div>
   <div class="row">
-    <div class="col d-flex align-items-center justify-content-center">
+    <div class="col-8 d-flex align-items-center justify-content-center">
       <table :key="updater">
         <tr v-for="row in Number(rows)" :key="row">
           <td
@@ -52,11 +52,14 @@ Vue.component("app-maze", {
         </tr>
       </table>
     </div>
+    <div class="col-4 d-flex align-items-center justify-content-center">
+      <pre>{{generateCode()}}</pre>
+    </div>
   </div>
 </div>
 
   `,
-  props: [],
+  props: ["mazeobj"],
   data: () => ({
     MAX_ROWS: 25,
     MAX_COLS: 25,
@@ -78,6 +81,20 @@ Vue.component("app-maze", {
     },
     getCellState(row, col) {
       return this.maze[row][col];
+    },
+    generateCode() {
+      let res = [];
+      for (let i = 0; i < this.rows; i++) {
+        for (let j = 0; j < this.columns; j++) {
+          if (this.maze[i][j] !== "empty") {
+            res.push(
+              this.maze[i][j] + "(pos(" + (i + 1) + "," + (j + 1) + "))."
+            );
+          }
+        }
+      }
+      this.mazeobj.string = res.join("\n");
+      return res;
     },
   },
   computed: {},
