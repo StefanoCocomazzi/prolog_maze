@@ -30,10 +30,11 @@ table {
   -ms-user-select: none;
   user-select: none;
 }
+
 .cell {
   border: 1px solid black;
-  width: 20px;
-  height: 20px;
+  width: 2em;
+  height: 2em;
 }
 .start {
   background-color: green;
@@ -71,4 +72,9 @@ table {
     transform: scale(0.9);
     background-color: rgb(32, 197, 120);
   }
+}
+
+._table-container {
+  padding-bottom: 72px;
+  overflow: auto;
 }
