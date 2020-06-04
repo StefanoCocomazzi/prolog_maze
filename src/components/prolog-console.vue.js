@@ -87,13 +87,14 @@ Vue.component("prolog-console", {
   created() {
     // potremmo farci passare il maze come parametro trami eventBus?
     // semplificherebbe le cose o è inutile??
-    eventBus.$on("find-path", () => this.computePath());
+    eventBus.$on("find-path", (maze) => this.computePath(maze));
   },
 
   methods: {
-    computePath() {
-      console.log("computePath");
-      this.knowledgeBase.maze = this.mazeobj.string;
+    computePath(maze) {
+      console.log("computePath", maze, this.KB());
+      // this.knowledgeBase.maze = this.mazeobj.string;
+      session.consult(maze);
       session.consult(this.KB());
       session.query("dfs(X).");
       session.answer((ans) => console.log(pl.format_answer(ans)));

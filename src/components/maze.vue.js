@@ -103,11 +103,11 @@ Vue.component("app-maze", {
         }
       }
 
-      this.mazeobj.string = res.join("\n");
-      return res;
+      // this.mazeobj.string = res.join("\n");
+      return res.join("\n");
     },
     findPath() {
-      eventBus.$emit("find-path");
+      eventBus.$emit("find-path", this.generateCode());
     },
   },
   computed: {},

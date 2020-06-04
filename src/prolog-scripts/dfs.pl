@@ -26,6 +26,7 @@ search_dfs(pos(I,J), Visited,[Action| PathToGoal]):-
 	atom_concat(cell, AtomRow, ColRow),
 	atom_concat(ColRow, AtomCol, Id),
   get_by_id(Id, Cell),
+  add_class(Cell, visited),
   % Sleep is 0.,
   sleep(100),
   search_dfs(S1,[S1|Visited],PathToGoal).
