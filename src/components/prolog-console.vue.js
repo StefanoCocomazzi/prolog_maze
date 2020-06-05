@@ -33,7 +33,6 @@ Vue.component("prolog-console", {
             <section class="row">
               <div class="col">
                 <h2>Knowledge Base</h2>
-                <div style="height: 320px;overflow-y:scroll;">Cuurent KB =>{{KB()}}</div>
                 <textarea
                   name="input-7-1"
                   v-model="knowledgeBase.program"
@@ -51,7 +50,6 @@ Vue.component("prolog-console", {
               <div class="col">
                <button type="button" class="btn btn-outline-success btn-block" @click="runProlog()" v-on:keypress.ctrl.enter="runProlog()">Run</button>
                <div class="answer">{{answers}}</div>
-               <div class="answer">{{mazeobj.string}}</div>
               </div>
             </section>
           </div>
@@ -92,10 +90,11 @@ Vue.component("prolog-console", {
 
   methods: {
     computePath(maze) {
-      console.log("computePath", maze, this.KB());
+      // console.log("computePath", maze, this.KB());
       // this.knowledgeBase.maze = this.mazeobj.string;
-      session.consult(maze);
-      session.consult(this.KB());
+      this.knowledgeBase.program = maze + this.KB();
+      // session.consult(maze);
+      session.consult(this.knowledgeBase.program);
       session.query("dfs(X).");
       session.answer((ans) => console.log(pl.format_answer(ans)));
     },
@@ -105,14 +104,12 @@ Vue.component("prolog-console", {
       if (this.query.substr(-1) !== ".") {
         this.query += ".";
       }
-
       this.answers = this.getAnswerlist(this.query).join("\n");
     },
 
     getAnswerlist(query) {
       // const session = pl.create();
-      session.consult(this.KB());
-
+      session.consult(this.knowledgeBase.program);
       session.query(query);
       let answers_list = [];
       let current_answer = true;
