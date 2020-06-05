@@ -1,8 +1,8 @@
 Vue.component("app-maze", {
-  template: `
-  <div class="container">
+    template: `
+  <div class="container" @mouseup="clicking = false">
     <div class="form-row">
-      <div class="col-md-2 col-xs-6">
+      <div class="col-md-2 col-xs-6 pb-2">
         <input
           v-model="rows"
           type="number"
@@ -10,7 +10,7 @@ Vue.component("app-maze", {
           placeholder="Rows"
         />
       </div>
-      <div class="col-md-2 col-xs-6">
+      <div class="col-md-2 col-xs-6 pb-2">
         <input
           v-model="columns"
           type="number"
@@ -18,14 +18,14 @@ Vue.component("app-maze", {
           placeholder="Columns"
         />
       </div>
-      <div class="col">
+      <div class="col pb-2 ">
         <div class="btn-group btn-group-toggle btn-block" data-toggle="buttons">
+          <label class="btn btn-secondary">
+            <input @click="editMode='empty'"  type="radio" name="options" /> Empty
+          </label>
           <label class="btn btn-secondary active">
             <input @click="editMode='wall'" type="radio" name="options" checked />
             Wall
-          </label>
-          <label class="btn btn-secondary">
-            <input @click="editMode='empty'" type="radio" name="options" /> Empty
           </label>
           <label class="btn btn-secondary">
             <input @click="editMode='start'" type="radio" name="options" /> Start
@@ -35,7 +35,7 @@ Vue.component("app-maze", {
           </label>
         </div>
       </div>
-      <div class="col-md-2">
+      <div class="col-md-2 pb-2">
         <button class="btn btn-primary btn-block" @click="findPath()">Find Path</button>
       </div>
     </div>
@@ -46,7 +46,9 @@ Vue.component("app-maze", {
               v-for="col in Number(columns)"
               :key="col"
               :id="'cell'+row+''+col"
-              @click="setState(row-1,col-1)"
+              @mousedown="setState(row-1,col-1)"
+              @mouseup="stopClicking()"
+              @mouseover="hovering(row-1,col-1)"
               class="cell"
               :class="maze[row-1][col-1]"
             ></td>
@@ -57,58 +59,72 @@ Vue.component("app-maze", {
   </div>
 
   `,
-  props: ["mazeobj"],
-  data: () => ({
-    MAX_ROWS: 25,
-    MAX_COLS: 25,
-    columns: 10,
-    rows: 10,
-    maze: [],
-    editMode: "wall", // empty, start, goal
-    updater: 0,
-  }),
-  created() {
-    new Array(this.MAX_ROWS).fill([]).forEach((el, i) => {
-      this.maze[i] = new Array(this.MAX_COLS).fill("empty");
-    });
-  },
-  methods: {
-    setState(row, col) {
-      this.maze[row][col] = this.editMode;
-      this.updater++;
+    props: ["mazeobj"],
+    data: () => ({
+        MAX_ROWS: 25,
+        MAX_COLS: 25,
+        columns: 10,
+        rows: 10,
+        maze: [],
+        editMode: "wall", // empty, start, goal
+        updater: 0,
+        clicking: false
+    }),
+    created() {
+        new Array(this.MAX_ROWS).fill([]).forEach((el, i) => {
+            this.maze[i] = new Array(this.MAX_COLS).fill("empty");
+        });
+        window.addEventListener('mousedown', this.startClicking);
+        window.addEventListener('mouseup', this.stopClicking);
     },
-    getCellState(row, col) {
-      return this.maze[row][col];
+    beforeDestroyed() {
+        window.removeEventListener('mouseup',this.stopClicking);
+        window.removeEventListener('mousedown', this.startClicking);
     },
-    generateCode() {
-      let res = [];
-      res.push("columns(" + this.columns + ").");
-      res.push("rows(" + this.rows + ").");
-      for (let i = 0; i < this.rows; i++) {
-        for (let j = 0; j < this.columns; j++) {
-          if (this.maze[i][j] === "start" || this.maze[i][j] === "goal") {
-            res.push(
-              this.maze[i][j] + "(pos(" + (i + 1) + "," + (j + 1) + "))."
-            );
-          }
-        }
-      }
-      for (let i = 0; i < this.rows; i++) {
-        for (let j = 0; j < this.columns; j++) {
-          if (this.maze[i][j] === "wall") {
-            res.push(
-              this.maze[i][j] + "(pos(" + (i + 1) + "," + (j + 1) + "))."
-            );
-          }
-        }
-      }
-
-      // this.mazeobj.string = res.join("\n");
-      return res.join("\n");
+    methods: {
+        stopClicking(){
+            console.log("STOP");
+            this.clicking = false;
+        },
+        startClicking(){
+            console.log("START");
+            this.clicking = true;
+        },
+        hovering(row, col) {
+            if (this.clicking) {
+                this.setState(row, col);
+            }
+        },
+        setState(row, col) {
+            this.maze[row][col] = this.editMode;
+            this.updater++;
+        },
+        getCellState(row, col) {
+            return this.maze[row][col];
+        },
+        generateCode() {
+            let res = [];
+            res.push("columns(" + this.columns + ").");
+            res.push("rows(" + this.rows + ").");
+            let start = "";
+            let goals = [];
+            let walls = [];
+            for (let i = 0; i < this.rows; i++) {
+                for (let j = 0; j < this.columns; j++) {
+                    if (this.maze[i][j] === "start") {
+                        start = "start(pos(" + (i + 1) + "," + (j + 1) + "))."
+                    } else if (this.maze[i][j] === "goal") {
+                        goals.push("goal(pos(" + (i + 1) + "," + (j + 1) + ")).");
+                    } else if (this.maze[i][j] === "wall") {
+                        walls.push("wall(pos(" + (i + 1) + "," + (j + 1) + ")).");
+                    }
+                }
+            }
+            return res.concat(start).concat(goals).concat(walls).join("\n");
+        },
+        findPath() {
+            eventBus.$emit("find-path", this.generateCode());
+        },
     },
-    findPath() {
-      eventBus.$emit("find-path", this.generateCode());
-    },
-  },
-  computed: {},
+    computed: {},
 });
