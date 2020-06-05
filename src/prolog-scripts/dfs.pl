@@ -1,32 +1,32 @@
 :- use_module(library(dom)).
 :- use_module(library(system)).
 
-dfs(Solution):-
-  start(S),
-  search_dfs(S,[S],Solution).
+dfs(Soluzione):-
+    start(S),
+    ricerca_depth(S,[S],Soluzione).
 
-search_dfs(S,_,[]):-
-  goal(S),!.
+ricerca_depth(S,_,[]):-
+    goal(S),!.
 
-% search_dfs(S, Visited,[Action| PathToGoal]):-
-%   applicable(Action, S),
-%   transform(Action, S, S1),
-%   \+member(S1, Visited),
-%   X =.. S,
-%   write(X),
-%   search_dfs(S1,[S1|Visited],PathToGoal).
+ricerca_depth(S, Visitati, [Az|Sequenza] ):-
+    addClassToPos(S, current),
+    write(S),
+    removeClassToPos(S, current),
+    applicable(Az, S),
+    transform(Az, S, F),
+    \+member(F,Visitati),
+    addClassToPos(F, visited),
+    ricerca_depth(F, [F|Visitati],Sequenza).
 
 
-search_dfs(pos(I,J), Visited,[Action| PathToGoal]):-
-  applicable(Action, pos(I,J)),
-  transform(Action, pos(I,J), S1),
-  \+member(S1, Visited),
-	number_chars(I, [AtomRow]),
-	number_chars(J, [AtomCol]),
-	atom_concat(cell, AtomRow, ColRow),
-	atom_concat(ColRow, AtomCol, Id),
+addClassToPos(pos(I,J), Class):-
+  atomic_list_concat([I,J], Atom),
+  atom_concat(cell, Atom, Id),
   get_by_id(Id, Cell),
-  add_class(Cell, visited),
-  % Sleep is 0.,
-  sleep(100),
-  search_dfs(S1,[S1|Visited],PathToGoal).
+  add_class(Cell, Class).
+
+removeClassToPos(pos(I,J), Class):-
+  atomic_list_concat([I,J], Atom),
+  atom_concat(cell, Atom, Id),
+  get_by_id(Id, Cell),
+  remove_class(Cell, Class).

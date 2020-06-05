@@ -1,3 +1,7 @@
+* {
+  padding: 0;
+  margin: 0;
+}
 #prolog-console-app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -50,11 +54,40 @@ table {
   animation-name: wallAnimation;
   animation-duration: 0.3s;
   animation-timing-function: ease-in;
-  animation-delay: 0;
+  animation-delay: 1.5s;
   animation-direction: alternate;
   animation-iteration-count: 3;
   animation-fill-mode: forwards;
   animation-play-state: running;
+}
+
+.current {
+  animation-name: currentAnimation;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in;
+  animation-delay: 0s;
+  animation-direction: alternate;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+  background-color: rgb(12, 53, 71);
+}
+
+@keyframes currentAnimation {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  75% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
 
 @keyframes wallAnimation {
@@ -77,4 +110,17 @@ table {
 ._table-container {
   padding-bottom: 72px;
   overflow: auto;
+}
+
+._floating-btn {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  bottom: 64px;
+  right: 64px;
+  background-color: #0c9;
+  color: #fff;
+  border-radius: 50px;
+  text-align: center;
+  /* box-shadow: 2px 2px 3px #999; */
 }
