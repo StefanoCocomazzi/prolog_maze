@@ -73,30 +73,32 @@ Vue.component("prolog-console", {
       .then((res) => res.text())
       .then((res) => {
         this.knowledgeBase["actions"] = res;
-        this.updater++;
+      });
+    fetch("src/prolog-scripts/dom-actions.pl")
+      .then((res) => res.text())
+      .then((res) => {
+        this.knowledgeBase["dom-actions"] = res;
       });
     fetch("src/prolog-scripts/dfs.pl")
       .then((res) => res.text())
       .then((res) => {
         this.knowledgeBase["dfs"] = res;
-        this.updater++;
       });
   },
   created() {
-    // potremmo farci passare il maze come parametro trami eventBus?
-    // semplificherebbe le cose o è inutile??
     eventBus.$on("find-path", (maze) => this.computePath(maze));
+    this.currentAlgorithm = "dfs";
   },
 
   methods: {
     computePath(maze) {
-      // console.log("computePath", maze, this.KB());
-      // this.knowledgeBase.maze = this.mazeobj.string;
       this.knowledgeBase.program = maze + this.KB();
-      // session.consult(maze);
+
       session.consult(this.knowledgeBase.program);
+      console.log(this.knowledgeBase.program);
+
       session.query("dfs(X).");
-      session.answer((ans) => console.log(pl.format_answer(ans)));
+      session.answer((ans) => this.handleSolution(ans));
     },
     runProlog() {
       this.answers = "";
@@ -123,9 +125,20 @@ Vue.component("prolog-console", {
     },
 
     KB() {
-      return Object.entries(this.knowledgeBase)
-        .map(([key, value]) => value)
-        .join("\n");
+      return (
+        "\n" +
+        this.knowledgeBase["actions"] +
+        "\n" +
+        this.knowledgeBase["dom-actions"] +
+        "\n" +
+        this.knowledgeBase[this.currentAlgorithm]
+      );
+    },
+    handleSolution(ans) {
+      this.answers = pl.format_answer(ans);
+      const path = pl.format_answer(ans).split("=")[1].split(";")[0];
+      session.query(`visualizeSolution(${path}).`);
+      session.answer();
     },
   },
   computed: {},
