@@ -1,8 +1,8 @@
 Vue.component("app-maze", {
     template: `
   <div class="container" @mouseup="clicking = false">
-    <div class="form-row">
-      <div class="col-md-2 col-xs-6 pb-2">
+    <div class="row pt-3 justify-content-center">
+    <div class="col-md-3 col-xs-6 pb-2">
         <input
           v-model="rows"
           type="number"
@@ -10,7 +10,7 @@ Vue.component("app-maze", {
           placeholder="Rows"
         />
       </div>
-      <div class="col-md-2 col-xs-6 pb-2">
+      <div class="col-md-3 col-xs-6 pb-2">
         <input
           v-model="columns"
           type="number"
@@ -18,7 +18,9 @@ Vue.component("app-maze", {
           placeholder="Columns"
         />
       </div>
-      <div class="col pb-2 ">
+    </div>  
+    <div class="row justify-content-center">
+       <div class="col-md-6 pb-1">
         <div class="btn-group btn-group-toggle btn-block" data-toggle="buttons">
           <label class="btn btn-secondary">
             <input @click="editMode='empty'"  type="radio" name="options" /> Empty
@@ -35,11 +37,8 @@ Vue.component("app-maze", {
           </label>
         </div>
       </div>
-      <div class="col-md-2 pb-2">
-        <button class="btn btn-primary btn-block" @click="findPath()">Find Path</button>
-      </div>
     </div>
-    <div class="row pt-5 justify-content-center _table-container"  >
+    <div class="row justify-content-center _table-container" >
         <table :key="updater">
           <tr v-for="row in Number(rows)" :key="row">
             <td
@@ -78,16 +77,14 @@ Vue.component("app-maze", {
         window.addEventListener('mouseup', this.stopClicking);
     },
     beforeDestroyed() {
-        window.removeEventListener('mouseup',this.stopClicking);
+        window.removeEventListener('mouseup', this.stopClicking);
         window.removeEventListener('mousedown', this.startClicking);
     },
     methods: {
-        stopClicking(){
-            console.log("STOP");
+        stopClicking() {
             this.clicking = false;
         },
-        startClicking(){
-            console.log("START");
+        startClicking() {
             this.clicking = true;
         },
         hovering(row, col) {
