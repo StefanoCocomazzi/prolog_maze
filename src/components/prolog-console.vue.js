@@ -67,27 +67,16 @@ Vue.component("prolog-console", {
     libs: ":- use_module(library(lists))",
     knowledgeBase: { program: "" },
     updater: 0,
+    currentAlgorithm: "dfs",
   }),
-  beforeCreate() {
-    fetch("src/prolog-scripts/actions.pl")
-      .then((res) => res.text())
-      .then((res) => {
-        this.knowledgeBase["actions"] = res;
-      });
-    fetch("src/prolog-scripts/dom-actions.pl")
-      .then((res) => res.text())
-      .then((res) => {
-        this.knowledgeBase["dom-actions"] = res;
-      });
-    fetch("src/prolog-scripts/dfs.pl")
-      .then((res) => res.text())
-      .then((res) => {
-        this.knowledgeBase["dfs"] = res;
-      });
-  },
+  beforeCreate() {},
   created() {
+    this.loadFiles(["actions", "dom-actions", "dfs", "bfs"]);
     eventBus.$on("find-path", (maze) => this.computePath(maze));
-    this.currentAlgorithm = "dfs";
+    eventBus.$on(
+      "set-strategy",
+      (strategy) => (this.currentAlgorithm = strategy)
+    );
   },
 
   methods: {
@@ -97,7 +86,9 @@ Vue.component("prolog-console", {
       session.consult(this.knowledgeBase.program);
       console.log(this.knowledgeBase.program);
 
-      session.query("dfs(X).");
+      session.query(`${this.currentAlgorithm}(Solution).`);
+      console.log(`${this.currentAlgorithm}(Solution).`);
+
       session.answer((ans) => this.handleSolution(ans));
     },
     runProlog() {
@@ -135,10 +126,20 @@ Vue.component("prolog-console", {
       );
     },
     handleSolution(ans) {
+      console.log(pl.format_answer(ans));
       this.answers = pl.format_answer(ans);
       const path = pl.format_answer(ans).split("=")[1].split(";")[0];
       session.query(`visualizeSolution(${path}).`);
       session.answer();
+    },
+    loadFiles(arr) {
+      arr.forEach((fileName) => {
+        fetch(`src/prolog-scripts/${fileName}.pl`)
+          .then((res) => res.text())
+          .then((res) => {
+            this.knowledgeBase[fileName] = res;
+          });
+      });
     },
   },
   computed: {},

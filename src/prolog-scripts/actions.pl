@@ -28,3 +28,16 @@ transform(east, pos(Row, Col), pos(Row, EAST)):- EAST is Col+1.
 transform(west, pos(Row, Col), pos(Row, WEST)):- WEST is Col-1.
 transform(north, pos(Row, Col), pos(NORTH, Col)):- NORTH is Row-1.
 transform(south, pos(Row, Col), pos(SOUTH, Col)):- SOUTH is Row+1.
+
+
+inverti([], []).
+inverti([Head|Tail],Res):-inverti(Tail, InvTail), append(InvTail, [Head], Res).
+
+/* invertiOpt(Lista,ListaInvertita)
+   invertiAux(Lista, ListaTempo, ListaInvertita)
+*/
+
+invertiOpt(Lista,ListaInvertita):-invertiAux(Lista,[],ListaInvertita).
+invertiAux([],ListaTemp, ListaTemp).
+invertiAux([Head|Tail],ListaTemp, ListaInvertita):-
+    invertiAux(Tail, [Head|ListaTemp], ListaInvertita).
