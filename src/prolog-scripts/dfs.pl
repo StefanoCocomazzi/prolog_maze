@@ -1,4 +1,3 @@
-:- use_module(library(system)).
 
 dfs(Soluzione):-
     start(S),
@@ -9,7 +8,8 @@ ricerca_depth(S,_,[]):-
 
 ricerca_depth(S, Visitati, [Az|Sequenza] ):-
     addClassToPos(S, current),
-    sleep(300),
+    travel_speed(Spd),
+    sleep(Spd),
     removeClassToPos(S, current),
     applicable(Az, S),
     transform(Az, S, F),

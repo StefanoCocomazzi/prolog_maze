@@ -29,6 +29,14 @@ Vue.component("pms-toolbar", {
         </label>
       </div>
     </div>
+    <div class="col-md-2 mt-1">
+        <input @change="setTravelSpeed"
+          v-model="speed"
+          type="number"
+          class="form-control"
+          placeholder="Travel Speed"
+        />
+    </div>
     <div class="col-md-3 mt-1">
       <button class="btn btn-success btn-block" @click="findPath()">
         Find Path
@@ -38,6 +46,11 @@ Vue.component("pms-toolbar", {
 </div>
 
   `,
+  data(){
+    return{
+      speed: 100
+    }
+  },
   methods: {
     setStrategy(strategy) {
       eventBus.$emit("set-strategy", strategy);
@@ -45,5 +58,8 @@ Vue.component("pms-toolbar", {
     findPath() {
       eventBus.$emit("find-path-clicked");
     },
+    setTravelSpeed(){
+      eventBus.$emit("set-travel-speed", this.speed);
+    }
   },
 });

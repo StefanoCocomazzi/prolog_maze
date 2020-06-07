@@ -71,18 +71,22 @@ Vue.component("prolog-console", {
   }),
   beforeCreate() {},
   created() {
+    this.knowledgeBase["travel-speed"] = `travel_speed(100).`
     this.loadFiles(["actions", "dom-actions", "dfs", "bfs"]);
     eventBus.$on("find-path", (maze) => this.computePath(maze));
     eventBus.$on(
       "set-strategy",
       (strategy) => (this.currentAlgorithm = strategy)
     );
+    eventBus.$on("set-travel-speed", (spd) => {this.knowledgeBase["travel-speed"] = `travel_speed(${spd}).`; console.log(this.knowledgeBase["travel-speed"])});
   },
 
   methods: {
     computePath(maze) {
+      $(".solution").removeClass("solution");
+      $(".visited").removeClass("visited");
+      $(".current").removeClass("current");
       this.knowledgeBase.program = maze + this.KB();
-
       session.consult(this.knowledgeBase.program);
       console.log(this.knowledgeBase.program);
 
@@ -117,6 +121,8 @@ Vue.component("prolog-console", {
 
     KB() {
       return (
+        "\n" +
+        this.knowledgeBase["travel-speed"] +
         "\n" +
         this.knowledgeBase["actions"] +
         "\n" +
