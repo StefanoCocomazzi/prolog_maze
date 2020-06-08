@@ -71,14 +71,17 @@ Vue.component("prolog-console", {
   }),
   beforeCreate() {},
   created() {
-    this.knowledgeBase["travel-speed"] = `travel_speed(100).`
+    this.knowledgeBase["travel-speed"] = `travel_speed(100).`;
     this.loadFiles(["actions", "dom-actions", "dfs", "bfs"]);
     eventBus.$on("find-path", (maze) => this.computePath(maze));
     eventBus.$on(
       "set-strategy",
       (strategy) => (this.currentAlgorithm = strategy)
     );
-    eventBus.$on("set-travel-speed", (spd) => {this.knowledgeBase["travel-speed"] = `travel_speed(${spd}).`; console.log(this.knowledgeBase["travel-speed"])});
+    eventBus.$on("set-travel-speed", (spd) => {
+      this.knowledgeBase["travel-speed"] = `travel_speed(${spd}).`;
+      console.log(this.knowledgeBase["travel-speed"]);
+    });
   },
 
   methods: {
@@ -96,6 +99,7 @@ Vue.component("prolog-console", {
       session.answer((ans) => this.handleSolution(ans));
     },
     runProlog() {
+      session.consult(this.knowledgeBase.program);
       this.answers = "";
       this.query = this.query.trim();
       if (this.query.substr(-1) !== ".") {
@@ -136,7 +140,9 @@ Vue.component("prolog-console", {
       this.answers = pl.format_answer(ans);
       const path = pl.format_answer(ans).split("=")[1].split(";")[0];
       session.query(`visualizeSolution(${path}).`);
-      session.answer();
+      console.log(`visualizeSolution(${path}).`);
+
+      session.answer((ans) => console.log("XXX", ans));
     },
     loadFiles(arr) {
       arr.forEach((fileName) => {

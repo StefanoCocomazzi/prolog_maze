@@ -1,4 +1,3 @@
-:- use_module(library(system)).
 
 bfs(X):-
     start(S),
@@ -10,7 +9,9 @@ ricercaAmpiezza([nodo(S,AzioniPerS)|_],_, AzioniPerS):-
 
 ricercaAmpiezza([nodo(S,AzioniPerS)|CodaStati], Visitati, Soluzione):-
     addClassToPos(S,current),
-    sleep(50),
+    % sleep(50),
+    % travel_speed(Spd),
+    % sleep(Spd),
     findall(Az, applicable(Az, S), ListaAzApplicabili),
     generaStatiFigli(nodo(S,AzioniPerS), [S|Visitati], ListaAzApplicabili, StatiFigli),
     append(CodaStati,StatiFigli,NuovaCoda),

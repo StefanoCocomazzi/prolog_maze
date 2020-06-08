@@ -1,8 +1,5 @@
-:- use_module(library(dom)).
-:- use_module(library(system)).
-
-
 addClassToPos(pos(I,J), Class):-
+  % sleep(50),
   atomic_list_concat([I,J], Atom),
   atom_concat(cell, Atom, Id),
   get_by_id(Id, Cell),
@@ -22,7 +19,7 @@ visualizeSolution(S,[]):-
   addClassToPos(S, solution).
 
 visualizeSolution(S,[H|T]):-
+  write(S),
   addClassToPos(S, solution),
-  sleep(50),
   transform(H,S,Pos),
   visualizeSolution(Pos,T).

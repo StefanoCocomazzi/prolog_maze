@@ -1,6 +1,9 @@
 wall(_):- false.
 
 :- use_module(library(lists)).
+:- use_module(library(system)).
+:- use_module(library(dom)).
+
 applicable(east, pos(Row,Col)):-
   columns(NUM_COLS),
   Col < NUM_COLS,
