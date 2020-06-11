@@ -72,7 +72,7 @@ Vue.component("prolog-console", {
   beforeCreate() {},
   created() {
     this.knowledgeBase["travel-speed"] = `travel_speed(100).`;
-    this.loadFiles(["actions", "dom-actions", "dfs", "bfs"]);
+    this.loadFiles(["actions", "dom-actions", "dfs", "bfs", "astar"]);
     eventBus.$on("find-path", (maze) => this.computePath(maze));
     eventBus.$on(
       "set-strategy",

@@ -1,12 +1,14 @@
+divider(-).
 addClassToPos(pos(I,J), Class):-
-  % sleep(50),
-  atomic_list_concat([I,J], Atom),
+  divider(X),
+  atomic_list_concat([X,I,X,J], Atom),
   atom_concat(cell, Atom, Id),
   get_by_id(Id, Cell),
   add_class(Cell, Class).
 
 removeClassToPos(pos(I,J), Class):-
-  atomic_list_concat([I,J], Atom),
+  divider(X),
+  atomic_list_concat([X,I,X,J], Atom),
   atom_concat(cell, Atom, Id),
   get_by_id(Id, Cell),
   remove_class(Cell, Class).

@@ -57,7 +57,7 @@ Vue.component("app-maze", {
             <td
               v-for="col in Number(columns)"
               :key="col"
-              :id="'cell'+row+''+col"
+              :id="'cell-'+row+'-'+col"
               @mousedown="setState(row-1,col-1)"
               @mouseup="stopClicking()"
               @mouseover="hovering(row-1,col-1)"
