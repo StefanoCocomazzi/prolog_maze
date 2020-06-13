@@ -17,7 +17,11 @@ a_star([node(N,_,_,PathToNode)|_], PathToNode):-
 a_star([Node|Open],Sol):-
 % 2- Let n be the first node on open. Remove n from open. Fail if open is empty.
   expand(Node, Children), % compute f cost forEach
+  travel_speed(Spd),
   insertChildren(Children,Open,NewOpenList),
+  replaceClassToNode4(Node, expanded, current),
+  sleep(Spd),
+  replaceClassToNode4(Node, current, visited),
   a_star(NewOpenList,Sol).
 
 expand(node(Pos,X,Y,Z), Neighbors):-
@@ -26,7 +30,10 @@ expand(node(Pos,X,Y,Z), Neighbors):-
 
 insertChildren([],Open,Open).
 insertChildren([C|Children],Open,NewOpenList):-
+  write(C),
   \+memberNode(C,Open),!,
+  write(C),
+  addClassToNode4(C, expanded),
   insert(C, Open,NewOpen),
   insertChildren(Children, NewOpen, NewOpenList).
 insertChildren([_|Children],Open,NewOpenList):-

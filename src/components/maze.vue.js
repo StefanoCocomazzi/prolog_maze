@@ -130,7 +130,13 @@ Vue.component("app-maze", {
           }
         }
       }
-      return res.concat(start).concat(goals).concat(walls).join("\n");
+      const bound = `max_bound(${this.rows * this.columns}).`;
+      return res
+        .concat(bound)
+        .concat(start)
+        .concat(goals)
+        .concat(walls)
+        .join("\n");
     },
     findPath() {
       eventBus.$emit("find-path", this.generateCode());

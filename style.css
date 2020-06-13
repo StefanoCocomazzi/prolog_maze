@@ -26,7 +26,7 @@ textarea {
 }
 
 table {
-  border: 1px solid #263238;
+  border: 2px solid #263238;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -36,35 +36,35 @@ table {
 }
 
 .cell {
-  border: 1px solid #263238;
+  border: 1px solid #35485896;
   width: 2em;
   height: 2em;
 }
 
 .visited {
-  background-color: #fbc02d;
+  background-color: #f9c74f;
 }
 
 .expanded {
-  background-color: magenta;
+  background-color: #f8961e;
 }
 
 .current {
-  background-color: #f57c00;
+  background-color: #f3722c;
 }
 
 .solution {
-  background-color: #43a047;
+  background-color: #90be6d;
 }
 
 .start {
-  background-color: #039be5;
+  background-color: #43aa8b;
 }
 .goal {
-  background-color: #d32f2f;
+  background-color: #f94144;
 }
 .wall {
-  background-color: #455a64;
+  background-color: #577590;
 }
 
 ._table-container {
