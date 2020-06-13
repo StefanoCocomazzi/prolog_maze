@@ -23,3 +23,4 @@ ricerca_profondita_limitata(S,Visitati,Limite,[Az|SequenzaAzioni]):-
     \+member(NuovoStato,Visitati),
     NuovoLimite is Limite - 1,
     ricerca_profondita_limitata(NuovoStato, [S|Visitati], NuovoLimite, SequenzaAzioni).
+
