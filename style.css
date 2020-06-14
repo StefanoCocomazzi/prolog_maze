@@ -2,6 +2,9 @@
   padding: 0;
   margin: 0;
 }
+#app {
+  padding-bottom: 64px;
+}
 #prolog-console-app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -37,8 +40,8 @@ table {
 
 .cell {
   border: 1px solid #35485896;
-  width: 2em;
-  height: 2em;
+  width: 32px;
+  height: 32px;
 }
 
 .visited {
@@ -68,7 +71,6 @@ table {
 }
 
 ._table-container {
-  padding-bottom: 72px;
   overflow: auto;
 }
 

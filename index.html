@@ -23,7 +23,7 @@
   </head>
   <body>
     <div class="container-fluid">
-      <div id="app">
+      <div id="app" class="row">
         <pms-toolbar title="Prolog Maze Solver"></pms-toolbar>
         <app-maze :mazeobj="mazeobj"></app-maze>
         <prolog-console :mazeobj="mazeobj"></prolog-console>
@@ -39,7 +39,7 @@
     <script src="libraries/tau-prolog/system.js"></script>
 
     <!-- Vue Components -->
-    <script src="src/components/toolbar.vue.js"></script>
+    <script src="src/components/sidebar.vue.js"></script>
     <script src="src/components/prolog-console.vue.js"></script>
     <script src="src/components/maze.vue.js"></script>
 
