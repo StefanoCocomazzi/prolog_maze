@@ -1,6 +1,6 @@
 Vue.component("pms-toolbar", {
-    template: `
-<div class="navbar navbar-expand-md col-md-3 border-right border-secondary">
+  template: `
+<div class="navbar navbar-expand-lg navbar-light col-lg-3 border-right border-secondary">
    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
      <span class="navbar-toggler-icon"></span>
    </button>
@@ -48,7 +48,7 @@ Vue.component("pms-toolbar", {
         <label class="col btn btn-outline-primary">
           <input @click="setStrategy('bfs')" type="radio" name="options" /> Euclidean Distance
         </label>
-      
+
       </div>
     </div>
     <div class="col-12 mt-1 mb-1">
@@ -62,7 +62,7 @@ Vue.component("pms-toolbar", {
             />
             <div class="input-group-append">
                 <span class="input-group-text">ms</span>
-            </div>    
+            </div>
         </div>
     </div>
     <div class="col-12 mt-1 mb-1">
@@ -77,20 +77,20 @@ Vue.component("pms-toolbar", {
 </div>
 
   `,
-    data() {
-        return {
-            speed: 100
-        }
+  data() {
+    return {
+      speed: 100,
+    };
+  },
+  methods: {
+    setStrategy(strategy) {
+      eventBus.$emit("set-strategy", strategy);
     },
-    methods: {
-        setStrategy(strategy) {
-            eventBus.$emit("set-strategy", strategy);
-        },
-        findPath() {
-            eventBus.$emit("find-path-clicked");
-        },
-        setTravelSpeed() {
-            eventBus.$emit("set-travel-speed", this.speed);
-        }
+    findPath() {
+      eventBus.$emit("find-path-clicked");
     },
+    setTravelSpeed() {
+      eventBus.$emit("set-travel-speed", this.speed);
+    },
+  },
 });

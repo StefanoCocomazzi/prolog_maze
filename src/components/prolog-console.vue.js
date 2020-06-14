@@ -79,6 +79,7 @@ Vue.component("prolog-console", {
       "bfs",
       "astar",
       "idastar",
+      "iddfs",
     ]);
     eventBus.$on("find-path", (maze) => this.computePath(maze));
     eventBus.$on(

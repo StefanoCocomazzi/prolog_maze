@@ -61,6 +61,5 @@ dfs_informata(Position, G, Bound, Visited, [Az|Sequenza] ):-
 
 dfs_informata(Position, G, Bound, _, _):-
     f(Position, G, F),
-    F > Bound,
     update_bound(F),
     fail.
